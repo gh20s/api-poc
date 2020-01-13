@@ -2,4 +2,3 @@ fastapi
 pydantic
 uvicorn
 locust
-test
