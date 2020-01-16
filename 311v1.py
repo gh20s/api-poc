@@ -1,11 +1,12 @@
 from fastapi import FastAPI
 import json
 from enum import Enum
+from pydantic import BaseModel
+from datetime import datetime
+
 
 # class to resemble a scikit-learn model using lookup date
 # allows median # of requests
-
-
 class naive_model:
     data = None
 
@@ -52,3 +53,19 @@ def complaints(complaint_type: ComplaintType):
         'ct': ct,
         'expectied_time': model.predict(ct),
     }
+
+
+# pydantic handles data structures and validation
+# specify complaint type - declare the object with 5 params
+# 1 paaram is steeling complaint type --> saying: this is an enum
+class Complaint(BaseModel):
+    complaint_type: ComplaintType
+    timestamp: datetime = datetime.now()
+    lat: float
+    lon: float
+    description: str
+
+# variable not defined in path is assum
+@app.post("/input/")
+def enter_complaint(body: Complaint):
+    return body.dict()  # for the sake of simplicity just returns value back
