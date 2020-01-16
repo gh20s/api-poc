@@ -39,12 +39,14 @@ model = naive_model()
 @app.get('/complaints/noise/{complaint_type}/time')
 # adding complaint type as type hint
 def complaints(complaint_type: ComplaintType):
-    # class allows FAST API to know which values are valid and instead of returning null
+    # class allows FAST API to know which values are valid
+    # and instead of returning null
     # can return that the complaint is invalid
     if complaint_type == ComplaintType.other:
         ct = 'noise'
     else:
         ct = f'noise - {complaint_type.value}'
+
     return {
         'complaint_type': complaint_type,
         'ct': ct,
