@@ -34,9 +34,18 @@ class ComplaintType(str, Enum):
 app = FastAPI()
 model = naive_model()
 
+# predictive model for complaint times per type
+@app.get("/complaints/all/{complaint_type}/time")
+def complaints(complaint_type: str):
+    return {
+        "complaint_type": complaint_type,
+        "expected_time": model.predict(complaint_type),
+    }
+
 # passing 2 arguments, complaint is defined in the route provided above
 # hour is not specified since fastapi assumes it will be provided as a paramter
 # if you pass something without an hour, scheme validation issue
+# avg complaint time for noise-specific complaints
 @app.get('/complaints/noise/{complaint_type}/time')
 # adding complaint type as type hint
 def complaints(complaint_type: ComplaintType):
@@ -51,7 +60,7 @@ def complaints(complaint_type: ComplaintType):
     return {
         'complaint_type': complaint_type,
         'ct': ct,
-        'expectied_time': model.predict(ct),
+        'expected_time': model.predict(ct),
     }
 
 
