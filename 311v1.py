@@ -37,8 +37,10 @@ model = naive_model()
 # hour is not specified since fastapi assumes it will be provided as a paramter
 # if you pass something without an hour, scheme validation issue
 @app.get('/complaints/noise/{complaint_type}/time')
-# adding complaint type astype hint
+# adding complaint type as type hint
 def complaints(complaint_type: ComplaintType):
+    # class allows FAST API to know which values are valid and instead of returning null
+    # can return that the complaint is invalid
     if complaint_type == ComplaintType.other:
         ct = 'noise'
     else:
